@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesClient;
@@ -22,11 +24,15 @@ public class MainActivity extends Activity implements
 		GooglePlayServicesClient.ConnectionCallbacks,
 		GooglePlayServicesClient.OnConnectionFailedListener, LocationListener {
 	
+	private static final int CMD_RESET = 1;
+	
 	GoogleMap map;
 	
 	LocationRequest mLocationRequest;
 	LocationClient mLocationClient;
 	Location mCurrentLocation;
+	
+	
 	
 	Marker marker;
 
@@ -71,12 +77,46 @@ public class MainActivity extends Activity implements
 
 	@Override
 	public void onLocationChanged(Location location) {
+		mCurrentLocation = location;
 		if(marker == null) {
 			// Move the map to your position and add a marker there.
 			map.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(), location.getLongitude()), 15));
 			marker = map.addMarker(new MarkerOptions().title("Vous êtes ici").position(new LatLng(location.getLatitude(), location.getLongitude())));
 		} else {
 			marker.setPosition(new LatLng(location.getLatitude(), location.getLongitude()));
+		}
+	}
+	
+	private void goInYourPosition() {
+		map.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(mCurrentLocation.getLatitude(), mCurrentLocation.getLongitude()), 15));		
+	}
+	
+	
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		super.onCreateOptionsMenu(menu);
+		MenuItem item;
+
+		item = menu.add(0, CMD_RESET, 0, R.string.menu_reset);
+
+		return true;
+	}
+
+	@Override
+	public boolean onPrepareOptionsMenu(Menu menu) {
+		super.onPrepareOptionsMenu(menu);
+		menu.findItem(CMD_RESET).setVisible(true);
+		return true;
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+		case CMD_RESET:
+			goInYourPosition();
+			return true;
+		default:
+			return false;
 		}
 	}
 

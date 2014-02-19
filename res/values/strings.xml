@@ -2,4 +2,7 @@
 
     <string name="app_name">MapExample</string>
 
+    <!-- Menu -->
+    <string name="menu_reset">Your position</string>
+    
 </resources>
