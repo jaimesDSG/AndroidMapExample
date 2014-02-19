@@ -1,4 +1,4 @@
-AndroidMapExemple
+AndroidMapExample
 =================
 
 An example of code for including google map on Android.
