@@ -27,3 +27,6 @@ proguard/
 *.ipr
 *.iws
 .idea/
+
+# Manifest with specified key
+*/AndroidManifest.xml
